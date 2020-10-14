@@ -42,7 +42,7 @@ scp up_down 192.168.0.90:/tmp
 ssh -t 192.168.0.90 /tmp/up_down
 ```
 
-A more reproducable way is to create a new container image which combines the tools and the libraries. We can build a new image (named `camera-sdk`) using the specification in the file `Dockerfile`:
+A more reproducable way is to create a new container image which combines the tools and the libraries. We can build a new image (named `camera-sdk`) using the specification in the file [Dockerfile](https://github.com/daniel-falk/computer-vision-for-embedded/blob/main/Dockerfile):
 ```bash
 docker build -t camera-sdk .
 
