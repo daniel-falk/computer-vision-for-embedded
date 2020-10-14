@@ -32,4 +32,21 @@ If the above does not work, verify the camera IP and that ssh is enabled in the 
 
 # Using the correct SDK and compiler
 
-...todo
+The SDK is distributed in two diffenrent docker images, one for the tools, e.g. compilers and one for the libraries. To compile the next applications we need both the libraries and the compiler (altough it would probably work with the upstream compiler as well..). The first way of doing this is to use the docker image with the libraries to copy them to our local source folder. This could look like:
+
+```bash
+docker run --rm -v `pwd`:/src axisecp/acap-api:3.1-armv7hf cp -r /opt/axis/sdk/temp/sysroots/cortexa9hf-neon-poky-linux-gnueabi/ /src/sysroot
+docker run --rm -v `pwd`:/src axisecp/acap-toolchain:3.1-armv7hf /usr/bin/arm-linux-gnueabihf-gcc --sysroot /src/sysroot /src/up_down_detect.c -lcapture -o /src/up_down
+
+scp up_down 192.168.0.90:/tmp
+ssh -t 192.168.0.90 /tmp/up_down
+```
+
+A more reproducable way is to create a new container image which combines the tools and the libraries. We can build a new image (named `camera-sdk`) using the specification in the file `Dockerfile`:
+```bash
+docker build -t camera-sdk .
+
+docker run --rm -v `pwd`:/src camera-sdk /usr/bin/arm-linux-gnueabihf-gcc --sysroot /sysroot /src/up_down_detect.c -lcapture -o /src/up_down
+```
+
+If you are not comfortable using Docker, or can't use it in your developer machine, the SDK is also available as `.deb` packages. Take a look at the [Axis website for ACAP](https://www.axis.com/sv-se/products/analytics/acap).
