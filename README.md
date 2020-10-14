@@ -1,15 +1,19 @@
 This repository was created for the webinar [Embedded Computer Vision](https://ingenjorsjobb.confetti.events/embedded-computer-vision) both to show how easy it is to get started with image analytics in an Axis network camera but also to show some interesting aspects of images as byte arrays. The code does only work (with expected outcome) on a few of the Axis cameras (specifically the ones with ARMv7 architecture and NV12 as native format).
 
 The very simple analytics application that is the final result of the webinar will guess the up- and down direction based on where the colors are more "sky like". The image is splitted in two parts and the ratio of pixels with higer Cb (blue shift) than Cr (red shift) value are counted and compared between the upper and lower part of the image. The binary image seen here is the result of only the thresholding and was created using the [`show_blue_threshold.c`](https://github.com/daniel-falk/computer-vision-for-embedded/blob/main/show_blue_threshold.c) file.
+
 ![binary image](https://raw.githubusercontent.com/daniel-falk/computer-vision-for-embedded/images/images/gray.png)
 
 This is the result of the original image:
+
 ![original image](https://raw.githubusercontent.com/daniel-falk/computer-vision-for-embedded/images/images/img.jpg)
 
 The image in it's native format in e.g. an AXIS M3106-L Mk II camera is stored in NV12 format as YCbCR. These channels can be seen in the following image (created with [`save_image.c`](https://github.com/daniel-falk/computer-vision-for-embedded/blob/main/save_image.c)) where the large upper image is the luminance (Y-channel), the lower left is the blue shift (Cb-channel) and the lower right is the red shift (Cr-channel). It can be seen that the bean bag chair, which is red, has a lighter color in the Cr image than the Cb image. The blue details, such as the sky and my shirt are lighter in the Cb image and darker in the Cr image.
+
 ![Color channels](https://raw.githubusercontent.com/daniel-falk/computer-vision-for-embedded/images/images/channels.png)
 
 The NV12 format first contains the whole Y-plane, next it contains the Cb and Cr pixels subsampled by a 2 by 2 factor in interlaced order. The subsampling means that there is one Cb and one Cr pixel for each group of 4 luminance pixels. The interlaced order means that every second address is an Cb pixel and every second is an Cr pixel. This can be seen in the following image where the upper boxes are the logical plane separated representation and the bar in the bottom is the placement in memory.
+
 ![NV12 format in memory](https://raw.githubusercontent.com/daniel-falk/computer-vision-for-embedded/images/images/nv12.png)
 
 All code in this repository is for show-case only. It is not designed to be robust and it does not necessarily use the APIs that are best practice to use or the ones that is recommended by Axis. For video data there is multiple APIs and many of them allows to specify or read the format of the image data, the native interface here assumes that you know what you are doing and was selected simply because it was suitable to show how images might be represented in the memory.
