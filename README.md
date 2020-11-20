@@ -12,7 +12,7 @@ The image in it's native format in e.g. an AXIS M3106-L Mk II camera is stored i
 
 ![Color channels](https://raw.githubusercontent.com/daniel-falk/computer-vision-for-embedded/images/images/channels.png)
 
-The NV12 format first contains the whole Y-plane, next it contains the Cb and Cr pixels subsampled by a 2 by 2 factor in interlaced order. The subsampling means that there is one Cb and one Cr pixel for each group of 4 luminance pixels. The interlaced order means that every second address is an Cb pixel and every second is an Cr pixel. This can be seen in the following image where the upper boxes are the logical plane separated representation and the bar in the bottom is the placement in memory.
+The NV12 format first contains the whole Y-plane, next it contains the Cb and Cr pixels subsampled by a 2 by 2 factor in alternating order. The subsampling means that there is one Cb and one Cr pixel for each group of 4 luminance pixels. The alternating order means that every second address is a Cb pixel and every second is a Cr pixel. This can be seen in the following image where the upper boxes are the logical plane separated representation and the bar in the bottom is the placement in memory.
 
 ![NV12 format in memory](https://raw.githubusercontent.com/daniel-falk/computer-vision-for-embedded/images/images/nv12.png)
 
